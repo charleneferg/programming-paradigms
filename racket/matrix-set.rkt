@@ -10,32 +10,13 @@
 (define row8 '(0 0 0 0 7 8 1 0 3))
 (define row9 '(0 0 0 6 0 0 5 9 0))
 (define matrix (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
-
-(define (solve matrix)
-  matrix
-  )
-
-(solve matrix)
-  
-
-; replace 0 with integers 1 to 9
-
-; list of integers 1 to 9
 (define range '(1 2 3 4 5 6 7 8 9))
+(define range2 (set 1 2 3 4 5 6 7 8 9)) 
 
-; set of integers 1 to 9
-(define range2 (set 1 2 3 4 5 6 7 8 9))
-
-; map check if element is zero replace with set range2
-;;(map (lambda (i)
-  ;;      (if(zero? i)
-  ;;       range2
-  ;;       (set i))
-  ;;       ) row1)
-
-; map check if element is zero replace with list range
- (map (lambda (i)
+;create a list of sets
+(map (lambda (i)
         (if(zero? i)
-         (append range '())
-         i)
+         range2
+         (set i))
          ) row1)
+
