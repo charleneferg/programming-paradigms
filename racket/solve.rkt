@@ -21,6 +21,14 @@
 (define col9 '(0 0 0 0 9 0 0 3 0))
 
 (define box1 '(0 2 5 1 0 4 0 0 6))
+(define box2 '(0 0 1 2 5 0 0 0 4))
+(define box3 '(0 0 0 0 0 0 2 1 0))
+(define box4 '(0 5 0 6 0 0 0 8 7))
+(define box5 '(0 0 0 0 2 0 0 0 0))
+(define box6 '(3 2 0 1 0 0 0 0 6))
+(define box7 '(0 9 1 0 0 0 0 0 0))
+(define box8 '(5 0 0 0 7 8 6 0 0))
+(define box1 '(6 0 0 1 0 3 5 9 0))
 
 (define matrix (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
 
