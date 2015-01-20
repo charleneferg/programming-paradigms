@@ -26,3 +26,4 @@
 
 ;(transform puzzle)
 (set-remove (getElement (cons 1 1) (transform puzzle)) 5)
+

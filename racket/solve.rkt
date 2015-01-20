@@ -28,12 +28,11 @@
 (define box6 '(3 2 0 1 0 0 0 0 6))
 (define box7 '(0 9 1 0 0 0 0 0 0))
 (define box8 '(5 0 0 0 7 8 6 0 0))
-(define box1 '(6 0 0 1 0 3 5 9 0))
+(define box9 '(6 0 0 1 0 3 5 9 0))
 
 (define matrix (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
 
 (define range '(1 2 3 4 5 6 7 8 9))
-(define count 1)
 (define (remove-zero lst)
 (map (lambda (i)
         (if(zero? i)
@@ -42,7 +41,7 @@
          ) lst))
 
 
-(define (all-list lst)
+(define (solve lst)
   (map remove-zero lst))
 
 
@@ -68,31 +67,6 @@
   (remove* lst1 lst2)
   )
 
-;(remove* s2 l1)
-  
-     
 
 
-;removes every element of list from second list
-;(remove* (list 1 2) (list 1 2 3 2 4 5 2))
-;'(3 4 5)
-
-
-;check whether the elements in a list are a list
-;(map list? r1)
-
-
-
-
-;filter-map - example
-;(filter-map (lambda (x) (and (positive? x) x)) '(1 2 3 -2 8))
-;'(1 2 3 8)
-
-;count 
-;(count positive? '(1 -1 2 3 -2 5))
-;4
-
-;select the elements in a list that are not even
-;(filter-not even? '(1 2 3 4 5 6))
-;'(1 3 5)
 
