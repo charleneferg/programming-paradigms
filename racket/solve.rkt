@@ -81,16 +81,32 @@
 ;remove singles for two different rows
 
 
-;find columns positions in a row represent a column
-;find position 2 for each row is column 2 and repeat singles 
+;find columns same position in each row represents a column
+;find position 2 for each row is column 2 
 
 
 ;find box1 which first 3 elements of first 3 rows
 ;box 2 elements 4-6 first 3 rows
 ;box 3 elements 7-9 first 3 rows etc
   
-;; assign matrix with all the lists of 9 added
+;; assign matrix with zeros removed and the lists of 9 added
 (set! matrix (solve matrix))
+
+;;find first element of list matrix which is row1
 (list-ref matrix 0)
+
+;;find second element of list matrix which is row2
+(list-ref matrix 1)
+
+;;find first element of row1 is also first element of col 1
 (list-ref (car matrix) 0)
+
+;;find second element of row1
+(list-ref (car matrix) 1)
+
+;; get row
+(define (getrow matrix x)
+  (list-ref matrix x))
+
+;; get column
 
