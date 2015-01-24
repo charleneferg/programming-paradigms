@@ -56,7 +56,7 @@
   (filter-not list? lst))
 
 ;store the result of singles from row2
-(define s2 (singles r2))
+(define s1 (singles r1))
 
 ;create a test list
 (define l1 '(1 2 3 4 5 6 7 8 9))
@@ -64,9 +64,33 @@
 ;remove singles from list using remove*
 
 (define (remove-singles lst1 lst2)
-  (remove* lst1 lst2)
+  (remove* s1 lst2)
   )
 
 
+; remove singles from one row
+(define (remove-all-singles lst2)
+  (map (lambda (i)
+         (if(list? i)
+           (remove-singles s1 l1)
+           i) 
+         )lst2))
 
+  (remove-all-singles r1)
+
+;remove singles for two different rows
+
+
+;find columns positions in a row represent a column
+;find position 2 for each row is column 2 and repeat singles 
+
+
+;find box1 which first 3 elements of first 3 rows
+;box 2 elements 4-6 first 3 rows
+;box 3 elements 7-9 first 3 rows etc
+  
+;; assign matrix with all the lists of 9 added
+(set! matrix (solve matrix))
+(list-ref matrix 0)
+(list-ref (car matrix) 0)
 
