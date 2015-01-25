@@ -51,15 +51,31 @@
 ;store the result of row2 after applying remove zero function
 (define r2 (remove-zero row2))
 
+;create a test list
+(define l1 '(1 2 3 4 5 6 7 8 9))
+
 ;select singles
+;from a list get all elements that are not a list return as a list
 (define (singles lst) 
   (filter-not list? lst))
 
-;store the result of singles from row2
-(define s1 (singles r1))
+;select first element from a row
 
-;create a test list
-(define l1 '(1 2 3 4 5 6 7 8 9))
+(car r1)
+
+;select second element from a row
+
+(cadr r1)
+
+;select third element from a row
+
+(caddr r1)
+
+;select fourth elment from a row
+(cadddr r1)
+
+;store the results of singles from row2
+(define s1 (singles r1))
 
 ;remove singles from list using remove*
 
@@ -69,17 +85,19 @@
 
 
 ; remove singles from one row
-(define (remove-all-singles lst2)
+
+(define (remove-all-singles-row lst2)
   (map (lambda (i)
          (if(list? i)
            (remove-singles s1 l1)
            i) 
          )lst2))
 
-  (remove-all-singles r1)
+  (remove-all-singles-row r1)
 
-;remove singles for two different rows
+;remove singles for different rows
 
+ 
 
 ;find columns same position in each row represents a column
 ;find position 2 for each row is column 2 
@@ -106,7 +124,15 @@
 
 ;; get row
 (define (getrow matrix x)
-  (list-ref matrix x))
+  (list-ref matrix x)
+  )
 
 ;; get column
+(define (getcolumn matrix x) ; pass entire sudoku grid and column number
+  (map (lambda (i) 
+         (list-ref (car matrix) x)
+         )matrix))
 
+(getcolumn matrix 1)
+
+       
