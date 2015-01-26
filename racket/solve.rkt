@@ -31,6 +31,7 @@
 (define box9 '(6 0 0 1 0 3 5 9 0))
 
 (define matrix (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
+(define matrix2 (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
 
 (define range '(1 2 3 4 5 6 7 8 9))
 (define (remove-zero lst)
@@ -61,18 +62,18 @@
 
 ;select first element from a row
 
-(car r1)
+;(car r1)
 
 ;select second element from a row
 
-(cadr r1)
+;(cadr r1)
 
 ;select third element from a row
 
-(caddr r1)
+;(caddr r1)
 
 ;select fourth elment from a row
-(cadddr r1)
+;(cadddr r1)
 
 ;store the results of singles from row2
 (define s1 (singles r1))
@@ -133,6 +134,7 @@
          (list-ref (car matrix) x)
          )matrix))
 
-(getcolumn matrix 1)
+;(getcolumn matrix 1)
 
        
+

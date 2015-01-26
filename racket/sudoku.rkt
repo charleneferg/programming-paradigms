@@ -1,5 +1,6 @@
 #lang racket
 (require racket/set)
+(require racket/unit)
 ; define a variable sublist that contains a list
 (define row1 '(0 2 5 0 0 1 0 0 0))
 (define row2 '(1 0 4 2 5 0 0 0 0))
@@ -60,4 +61,38 @@
   )
 
 ;(solve matrix)
+
+;; assign matrix with zeros removed and the lists of 9 added
+(define matrix2 (solve matrix))
+
+; result from remove-zero function : removes zero and replaces zero with list possible valus 1-9
+(define r1 '((1 2 3 4 5 6 7 8 9) 2 5 (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9) 1 (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9)))
+
+
+;store the results of singles from row2
+(define s1 (singles r1))
   
+; remove singles from one row
+
+(define (remove-all-singles-row lst2)
+  (map (lambda (i)
+         (if(list? i)
+           (remove-singles s1 range)
+           i) 
+         )lst2))
+
+  (remove-all-singles-row r1)
+(define matrix-set '())
+;store list of sets in variable
+(set! matrix-set (transform matrix))
+
+(define set1 (set 1 2 3 4 5 6 7 8 9))
+
+ (set-member? set1 5)
+(set-empty? set1)
+
+(set-remove set1 2)
+(set-count set1)
+
+(set-first set1)
+(set-rest set1)
