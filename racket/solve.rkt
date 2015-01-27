@@ -60,6 +60,12 @@
 (define (singles lst) 
   (filter-not list? lst))
 
+(define (singles3 lst) 
+  (cond [(null? lst)  '() ]
+        [(= (length (car lst)) 1) (car lst) ]
+        )
+  )
+
 ;select first element from a row
 
 ;(car r1)
@@ -112,16 +118,16 @@
 (set! matrix (solve matrix))
 
 ;;find first element of list matrix which is row1
-(list-ref matrix 0)
+;(list-ref matrix 0)
 
 ;;find second element of list matrix which is row2
-(list-ref matrix 1)
+;(list-ref matrix 1)
 
 ;;find first element of row1 is also first element of col 1
-(list-ref (car matrix) 0)
+;(list-ref (car matrix) 0)
 
 ;;find second element of row1
-(list-ref (car matrix) 1)
+;(list-ref (car matrix) 1)
 
 ;; get row
 (define (getrow matrix x)
@@ -129,12 +135,17 @@
   )
 
 ;; get column
-(define (getcolumn matrix x) ; pass entire sudoku grid and column number
-  (map (lambda (i) 
-         (list-ref (car matrix) x)
-         )matrix))
+(define (getcolumn lst)
+  (map first lst))
 
-;(getcolumn matrix 1)
+;(getcolumn matrix)
+
+matrix
+
+ ;(cons (getcolumn matrix)(getrow matrix 0))
+
+ (append (getcolumn matrix) (getrow matrix 0))
+
 
        
 
