@@ -60,6 +60,8 @@
 (define (singles lst) 
   (filter-not list? lst))
 
+
+; find a singleton
 (define (singles3 lst) 
   (cond [(null? lst)  '() ]
         [(= (length (car lst)) 1) (car lst) ]
@@ -144,7 +146,8 @@ matrix
 
  ;(cons (getcolumn matrix)(getrow matrix 0))
 
- (append (getcolumn matrix) (getrow matrix 0))
+;get column and row 
+(append (getcolumn matrix) (getrow matrix 0))
 
 
        
