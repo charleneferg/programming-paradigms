@@ -68,6 +68,9 @@
 ; result from remove-zero function : removes zero and replaces zero with list possible valus 1-9
 (define r1 '((1 2 3 4 5 6 7 8 9) 2 5 (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9) 1 (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9)))
 
+; result of set
+
+(define set2 (list (set 1 2 3 4 5 6 7 8 9) (set 2) (set 5) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9) (set 1) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9)))
 
 ;store the results of singles from row2
 (define s1 (singles r1))
@@ -96,3 +99,49 @@
 
 (set-first set1)
 (set-rest set1)
+
+(define count-singles
+  (lambda (lst)
+    (cond
+      ((null? lst) 0)
+      ((and (list? (car lst)) (= 1 (length (car lst)))) (+ 1 (count-singles (cdr lst))))
+      (else (+ 0 (count-singles (cdr lst))))
+      )))
+
+;; get row
+(define (getrow matrix x)
+  (list-ref matrix x)
+  )
+
+;; get column
+(define (getcolumn lst)
+  (map first lst))
+
+;(getcolumn matrix)
+
+(let ((x 1) (y 2))
+  (+ y(* x 2)))
+
+(let ((x '(1 2 3)))
+  (remove 1 x))
+
+(define (remove-set lst x)
+  set-remove lst x
+  )
+
+;(remove-set matrix-set 2)
+; (list-ref matrix-set 1) gets the second row
+
+(map  
+ (lambda (i) 
+  i
+   )matrix-set)
+ 
+ 
+ (define find-singles
+  (lambda (lst)
+    (cond
+      ((null? lst) '())
+      ((and (list? (car lst)) (= 1 (length (car lst)))) (+ 1 (find-singles (cdr lst))))
+      (else ((find-singles (cdr lst))))
+      )))

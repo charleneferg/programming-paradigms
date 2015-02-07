@@ -38,7 +38,8 @@
 (map (lambda (i)
         (if(zero? i)
          range
-         i)
+         ;i)
+         (list i))
          ) lst))
 
 
@@ -65,12 +66,12 @@
 (define (singles3 lst) 
   (cond [(null? lst)  '() ]
         [(= (length (car lst)) 1) (car lst) ]
-        )
+        ["none"])
   )
 
 ;select first element from a row
 
-;(car r1)
+(cdr r1)
 
 ;select second element from a row
 
