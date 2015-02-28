@@ -64,13 +64,23 @@
         ((null? lst) xs)
         ((set-empty? xs) xs)
         ((set-empty? lst) xs)
-        ((set-member? xs (set-first lst)) (return-element (set-remove xs (set-first lst)) (set-rest lst)) )
+        ((single? xs) xs)
+        ((and (not(single? xs)) (set-member? xs (set-first lst))) (return-element (set-remove xs (set-first lst)) (set-rest lst)) )
         (else (eval xs))
         ))
 
 (trace return-element)
 
 ;(return-element (set 1 2 3 4 5 6 7 8 9) (set 2 5)) => (set 1 3 4 6 7 8 9)
+
+;(define (return-result xs lst)
+;  (cond 
+;    [(null? xs) xs]
+;    [(null? lst) lst]
+;    [(empty? xs) xs]
+;    [(empty? lst) lst]
+;    [ ]
+;    )
 
 
 ;(return-single (set 1)) => 1
@@ -104,7 +114,7 @@
   (cond ((null? xs) xs)
         ((set-empty? xs) xs)
         ((set-member? xs element) (set-remove xs element))
-        (else (eval xs)
+        (else xs
               ))
   )
 ;(remove-set (set 1 2 3 4 5 6 7 8 9) 1)
@@ -113,15 +123,16 @@
 ;(getSingle (set 1 2))  
 
 (define (main-routine puzzle)
+ 
   (map
    (lambda (x)
-     (let((row x))
+     (print x)
        (map 
         (lambda (y)
             (if (single? y)
                (set! singleList (getElement y singleList))
                (return-element y singleList)
-                ))x))) puzzle))
+                ))x)) puzzle))
 
 ;(trace main-routine)
 (main-routine puzzle)

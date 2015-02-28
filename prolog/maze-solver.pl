@@ -1,0 +1,1 @@
+:- consult('maze.pl').
