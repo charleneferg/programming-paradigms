@@ -137,4 +137,11 @@
 ;(trace main-routine)
 (main-routine puzzle)
 
+;(define (index puzzle)
+;  (map 
+;   (lambda (x)
+;  
+;     puzzle)
+;
+
 

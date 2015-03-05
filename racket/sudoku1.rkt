@@ -1,6 +1,7 @@
 #lang racket
 (require racket/set)
 (require racket/unit)
+(require racket/trace)
 ; define a variable sublist that contains a list
 (define row1 '(0 2 5 0 0 1 0 0 0))
 (define row2 '(1 0 4 2 5 0 0 0 0))
@@ -151,3 +152,5 @@
 
 (set-rest  (set 1 2 3 4 5 6 7 8 9)) ;=> (set 2 3 4 5 6 7 8 9)
 (set-first  (set 1 2 3 4 5 6 7 8 9)) ;=> 1
+
+(matrix-set
