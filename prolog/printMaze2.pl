@@ -14,28 +14,60 @@ barrier(4,8).
 barrier(4,9).
 barrier(5,2).
 
-add_row(_, [0], _).
-add_row(Row, Col, List) :- N is Col - 1, add_row(Row, [N], [K1]), append(K1,[Row,Col],List).
-
-mazelist(0, _, _).
-mazelist(Row, Col, List) :- add_row(Row, Col, List), 
+rowlist([0, Col], []).
+rowlist([Row, Col], [[Row, Col] | L ]) :- 
+							Row > 0, 
 							N2 is Row - 1, 
-							mazelist(N2, Col, K2),
- 							append(K2, [Row,Col], List).
+							rowlist([N2, Col], L).
+
+collist([Row, 0], []).
+collist([Row, Col], [[Row, Col] | L ]) :- 
+							Col > 0, 
+							N2 is Col - 1, 
+							collist([Row, N2], L).
+
+mazelist(List) :- mazeSize(X,Y), 
+				rowlist([X,Y], Rowlist),
+				collist([X,Y], Collist),
+ 				append(Rowlist,Collist,List).
+
+createMaze([Row, Col], [[Row, Col] | L ]) :-
+mazelist2([Row, Col], L), mazelist([Row, Col], L).
+
 /* Limit the domain of the maze*/
 
 valid_maze(Row, Col) :- 
+mazeSize(Row,Col),
 numlist(1, Row, RowRange), 
 numlist(1, Col, ColRange),
-member(Row, RowRange), member(Col, ColRange), mazelist(Row,Col, List).
+member(Row, RowRange), member(Col, ColRange).
+
+
+/* Check that the values are within the range of the maze size*/
+valid_range(X, Y) :- 
+mazeSize(Row,Col),
+numlist(1, Row, RowRange), 
+numlist(1, Col, ColRange),
+member(X, RowRange), member(Y, ColRange).
 
 /* How do you check all facts in knowledge base? */
 /* How do you create a list of all facts in knowledge base*/
-barrier_list(List) :- findall([X,Y], (barrier(X,Y)), List).
+barrier_list(List) :- 
+	findall([X,Y], 
+	(barrier(X,Y)), List).
 
 /* */
-print_maze(Z) :- barrier_list(List), not(member(Z, List)), write(.).
-print_maze(Z) :- barrier_list(List), (member(Z, List)), write(x).
+print_maze(Z) :- 
+	barrier_list(List), 
+	not(member(Z, List)), 
+	write(.).
+
+print_maze(Z) :- 
+	barrier_list(List), 
+	(member(Z, List)), 
+	write(x).
+
+
 /*output either . or x depending on member of list */
 /* Below rules produce the output of the maze             */
 
@@ -57,8 +89,14 @@ divider(X) :- write(.+), width(X), write(+).
 row(Y,X,L2) :- numlist(1, Y, L2), print_row(X, L2).
 
 print_row(_, []). 
-print_row(X, [H|T]) :- write(H), write('|'), width2(X), write('|'), nl, print_row(X,T).
+print_row(X, [H|T]) :- write(H), 
+write('|'), width2(X), 
+write('|'), nl, 
+print_row(X,T).
 
 mazeSize(A,B) :- output(B,A).
 
-output(X,Y) :- column_number(X,L), nl, divider(X), nl, row(Y, X, L2), divider(X).
+output(X,Y) :- column_number(X,L), 
+nl, divider(X), nl, 
+row(Y, X, L2), 
+divider(X).

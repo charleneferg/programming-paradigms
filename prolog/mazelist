@@ -1,0 +1,6 @@
+mazelist([], []).
+mazelist([0, _], _).
+mazelist([Row, Col], [[Row, Col] | L ]) :- 
+							Row > 0, 
+							N2 is Row - 1, 
+							mazelist([N2, Col], L).

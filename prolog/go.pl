@@ -25,7 +25,7 @@ rev2([X|L1], L2, L3) :-
 
 /*Boundary condition where we are going from room X to room Y and we are already at room Y or X = Y */
 
-go(X,Y,Route) :- go1(X,Y,[],R), rev()
+go(X,Y,Route) :- go1(X,Y,[],R), rev().
 
 go1(X,X,Route,[X|Route]).
 
