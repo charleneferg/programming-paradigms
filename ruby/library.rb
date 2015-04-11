@@ -148,7 +148,7 @@ end
 
 class Library
 
-  require_relative 'collection'
+  #require_relative 'collection'
   #require 'singleton'
   #include Singleton
 
@@ -167,12 +167,12 @@ class Library
 
   def
   close()
-    @closed = true
-    raise LibraryNotOpen, "The library is not open." if @closed == true
+
+   raise LibraryNotOpenError, "The library is not open exception." if @closed == true
   else
+    @closed = true
     puts "Good night"
   end
-end
 
 
 def
@@ -183,6 +183,10 @@ end
 #Returns the string  The library is now
 #closed for renovations.”.
 
+
+end
+
+class LibraryNotOpenError < StandardError
 
 end
 
@@ -203,3 +207,20 @@ puts book
 p "The current title is #{book.title}."
 p "The current author is #{book.author}."
 p "The current due date is #{book.due_date.to_i}."
+
+
+
+LibraryObject = Library.new
+#puts LibraryObject.close
+
+
+begin
+
+puts LibraryObject.close
+
+rescue Library::LibraryNotOpenError
+  puts "The library is not open."
+
+ensure
+
+  end
