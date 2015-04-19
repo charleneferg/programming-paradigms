@@ -1,7 +1,39 @@
+class Library
+
+  require 'singleton'
+  include Singleton
+
+  def
+  initialize
+  end
+
+
+  def
+  close()
+  end
+  #Shut down operations and go home for the night.
+  # None of the other operations (except quit) can be used when the library is closed.__id__ If successful,
+  # returns the string "Good night.".
+#May throw an Exception with the message The library is not open.
+
+
+def
+  quit()
+end
+
+#The mayor, citing a budget crisis, has stopped all funding for the library. Can happen at any time.
+#Returns the string  The library is now
+#closed for renovations.”.
+
+
+end
+
+####
+
 class Calendar
   require 'date'
+  include Singleton
 
-  attr_accessor :date
 
   def initialize()
     @date = 0
@@ -12,80 +44,132 @@ class Calendar
 
   def get_date()
 
-    return @date
+    now = DateTime.now
+    @date = now
+    puts "before converted to integer {}"
+    @date = @date.to_int
   end
 
   #Increment the date (move ahead to the next day), and returns the new date.
 
   def advance()
 
-    @date += 1
+    @date = now.day + 1
+    puts "It is #{now.day} today"
+
+    puts "Tomorrow is #{now.day + 1} "
 
 
   end
 
 end
 
+####
+
+class Member
+
+  # A member is a "customer" of the library.
+  # A member must have a library card in order to check out books.
+  # A member with a card may have no more than three books checked out at any time.
+
+  def
+  initialize(name, library)
+  end
+
+  #Constructs a member with the given name, and no books.
+  # The member must also have a reference to the Library object that he/she uses.
+  def
+  get_name()
+  end
+
+  #Returns this member's name.
+
+
+  def
+  check_out(book)
+  end
+
+  #Adds this Book object to the set of books checked out by this member.
+  def
+  give_back(book)
+  end
+
+  #Removes this Book object from the set of books checked out by this member.
+  # (Since members are usually said to "return" books, this method should be called return !)
+
+  get_books()
+  #Returns the set of Book objects checked out to this member (may be the empty set.
+  def
+  send_overdue_notice(notice)
+  end
+  #Tells this member that he/she has overdue books.
+  # (What the method actually does is just print out this member's name along with the notice.)
+
+end
+
+####
 
 class Book
 
-# A book has these attributes (instance variables): id, title,
-# author (only one author per book), and due_date.
-# The due date is nil if the book is not checked out.
+  #A book has these attributes (instance variables): id, title,
+  #author (only one author per book), and due_date.
+  # The due date is nil if the book is not checked out.
 
-  attr_accessor :id, :title, :author, :due_date
+  @id
+  @title
+  @author
+  @due_date
 
-#The constructor. Saves the provided information. When created, the book is not checked out.
+  #The constructor. Saves the provided information. When created, the book is not checked out.
 
   def
   initialize(id, title, author)
     @id = id
     @title = title
     @author = author
-    @due_date = nil
   end
 
 
-# Returns this book's unique identification number.
+  # Returns this book's unique identification number.
   def
   get_id()
     @id
   end
 
-#Returns this book's title.
+  #Returns this book's title.
 
   def
   get_title()
     @title
   end
 
-#Returns this book's author.
+  #Returns this book's author.
   def
   get_author()
     @author
   end
 
-#Returns the date (as an integer) that this book is due.
+  #Returns the date (as an integer) that this book is due.
 
   def
   get_due_date()
-    @due_date.to_i
+    @due_date
   end
 
-#Sets the due date of this Book. Doesn't return anything.
+  #Sets the due date of this Book. Doesn't return anything.
   def
   check_out(due_date)
 
 
   end
 
-#Sets the due date of this Book to nil. Doesn't return anything.
+  #Sets the due date of this Book to nil. Doesn't return anything.
   def
   check_in()
-    @due_date = nil
+    @due_date = 0
   end
 
-#Returns a string of the form "id: title, by author”.
+  #Returns a string of the form "id: title, by author”.
   def
   to_s()
     "Book id: #{@id}, Title: #{@title}, By author:  #{@author}"
@@ -93,134 +177,3 @@ class Book
 
 
 end
-
-
-class Member
-
-  # A member is a "customer" of the library.
-  # A member must have a library card in order to check out books.
-  # A member with a card may have no more than three books checked out at any time.
-  attr_accessor :name, :libraryref, :close
-
-  #Constructs a member with the given name, and no books.
-  # The member must also have a reference to the Library object that he/she uses.
-
-  def
-  initialize(name, library)
-    @name = name
-    @libraryref = library
-  end
-
-  #Returns this member's name.
-
-  def
-  get_name()
-    @name
-  end
-
-  #Adds this Book object to the set of books checked out by this member.
-  def
-  check_out(book)
-  end
-
-
-  #Removes this Book object from the set of books checked out by this member.
-  # (Since members are usually said to "return" books, this method should be called return !)
-  def
-  give_back(book)
-  end
-
-
-  #Returns the set of Book objects checked out to this member (may be the empty set.)
-  def
-  get_books()
-  end
-
-
-  #Tells this member that he/she has overdue books.
-  # (What the method actually does is just print out this member's name along with the notice.)
-  def
-  send_overdue_notice(notice)
-  end
-
-
-end
-
-class Library
-
-  #require_relative 'collection'
-  #require 'singleton'
-  #include Singleton
-
-  attr_accessor :closed
-
-  def
-  initialize
-  end
-
-
-  #Shut down operations and go home for the night.
-  # None of the other operations (except quit) can be used when the library is closed.__id__ If successful,
-  # returns the string "Good night.".
-  #May throw an Exception with the message The library is not open.
-
-
-  def
-  close()
-
-   raise LibraryNotOpenError, "The library is not open exception." if @closed == true
-  else
-    @closed = true
-    puts "Good night"
-  end
-
-
-def
-quit()
-end
-
-#The mayor, citing a budget crisis, has stopped all funding for the library. Can happen at any time.
-#Returns the string  The library is now
-#closed for renovations.”.
-
-
-end
-
-class LibraryNotOpenError < StandardError
-
-end
-
-
-#Test Create Calendar object and output Calendar methods
-calendar = Calendar.new
-puts calendar.inspect
-calendar.get_date
-p "The current date is #{calendar.date} ."
-calendar.advance
-p "The current date is #{calendar.date} ."
-
-#Test Create Book object and output Book methods
-
-book = Book.new 1, "Lord of the Rings", "Tolkien"
-
-puts book
-p "The current title is #{book.title}."
-p "The current author is #{book.author}."
-p "The current due date is #{book.due_date.to_i}."
-
-
-
-LibraryObject = Library.new
-#puts LibraryObject.close
-
-
-begin
-
-puts LibraryObject.close
-
-rescue Library::LibraryNotOpenError
-  puts "The library is not open."
-
-ensure
-
-  end

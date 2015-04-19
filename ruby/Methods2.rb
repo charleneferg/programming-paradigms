@@ -17,9 +17,12 @@ def initialize author, title, body, comments
     @author = options[:author]
     @title = options[:title]
     @body = options[:body]
-    @comments = options[:comments]
+    @comments = options[:comments] || [] # default is empty if no comment
 
   end
+
+  def insert_comment *comments
+    comments.each {|c| @comments << c} 
 
 end
 
