@@ -3,97 +3,119 @@ require 'singleton'
 class Library
   include Singleton
 
-  attr_accessor :library_object, :calendar, :books, :my_array, :members, :open
+  attr_accessor :library_object, :calendar, :books_available, :my_array, :members, :serve, :libraryid, :open
 
   #calendar object
-  # my_array an array that reads and storees the lines of text file
-  # books array that stores the book objects
+  # my_array an array that reads and stores the lines of text file
+  # books_available array that stores the book objects
   # members dictionary of members
   # open boolean library open or closed
   # library_object
+  # serve - current member being served
 
   def initialize
-    calendar = Calendar.new
+    calendar = Calendar.instance
     @calendar = calendar
 
 
     my_array = IO.readlines('collections.txt')
-    books = []
+    books_available = []
     my_array.each_with_index do |line, index|
       title, author = line.chomp.split(/,/)
       id = index + 1
-      books << Book.new(id, title, author)
+      books_available << Book.new(id, title, author)
     end
 
     @members = {}
 
     @open = false
 
+    @serve = nil
+
+    @libraryid = self.object_id
+
   end
 
   def open()
 
     if @open == true
-    raise 'The library is already open!'
-          else
-            calendar.advance
-             @open = true
-              puts "Today is day #{calendar.get_date}"
-        end
-
+      raise 'The library is already open!'
     end
 
+    calendar.advance
+    @open = true
+    puts "Today is day #{calendar.get_date}"
+
+  end
+
   def find_all_overdue_books
+    raise 'The library is not open!' unless @open
 
   end
 
   def issue_card(name_of_member)
+    raise 'The library is not open!' unless @open
 
+    result = members.hash.member?(name_of_member)
+
+    if result == true
+      puts "#{name_of_member} already has a library card."
+    else
+      members.store(name_of_member, Member.new(name_of_member, @libraryid))
+      puts "Library card is issued to #{name_of_member}."
+    end
 
   end
 
+  # @param [members] name_of_member
   def serve(name_of_member)
+    raise 'The library is not open!' unless @open
+    result = members.hash.member?(name_of_member)
+    @serve = nil
 
+    if result == true
+      temp = members.value_at(name_of_member)
+      @serve = temp[0]
+      puts " Now serving #{name_of_member}."
+    else
+      puts " #{name_of_member} does not have a library card."
+    end
 
   end
 
   def find_overdue_books
-
+    raise 'The library is not open!' unless @open
   end
 
   def search(string)
-
+    raise 'The library is not open!' unless @open
   end
 
   def check_out(*book_ids)
-
+    raise 'The library is not open!' unless @open
   end
 
   def renew(*book_ids)
-
+    raise 'The library is not open!' unless @open
   end
 
   def close
 
-    if @open == false
-      raise 'The library is not open!'
-    else
-      @open = false
-      puts 'Good night'
-    end
+    raise 'The library is not open!' unless @open
+    @open = false
+    puts 'Good night'
 
 
   end
 
   def quit
 
-    puts "The library is now closed for renovations"
+    puts 'The library is now closed for renovations'
 
   end
 
+
 end
-
-
 
 
 class Calendar
@@ -104,23 +126,18 @@ class Calendar
   def initialize()
 
     @date = 0
-
   end
 
   #Returns (as an integer) the current date.
 
   def get_date()
-
     @date
   end
 
   #Increment the date (move ahead to the next day), and returns the new date.
 
   def advance()
-
     @date += 1
-
-
   end
 
 end
@@ -190,7 +207,6 @@ class Book
     "Book id: #{@id}, Title: #{@title}, By author:  #{@author}"
   end
 
-
 end
 
 
@@ -221,29 +237,30 @@ class Member
   #Adds this Book object to the set of books checked out by this member.
   def
   check_out(book)
-    books_out.push book
+    if @card == true
+      books_out.push book
+    else
+      puts "#{@name} does not have a library card"
+    end
   end
 
 
   #Removes this Book object from the set of books checked out by this member.
   # (Since members are usually said to "return" books, this method should be called return !)
-  def
-  give_back(book)
+  def give_back(book)
     books_out.pop book
   end
 
 
   #Returns the set of Book objects checked out to this member (may be the empty set.)
-  def
-  get_books()
+  def get_books()
     @books_out
   end
 
 
   #Tells this member that he/she has overdue books.
   # (What the method actually does is just print out this member's name along with the notice.)
-  def
-  send_overdue_notice(notice)
+  def send_overdue_notice(notice)
     puts "Reminder #{@name}  #{notice}"
   end
 
@@ -251,42 +268,4 @@ class Member
 end
 
 
-library1 = Library.instance
 
-puts library1.inspect
-
-=begin
-puts calendar.inspect
-calendar.get_date
-p "The current date is #{calendar.date} ."
-calendar.advance
-p "The current date is #{calendar.date} ."
-=end
-
-#Test Create Book object and output Book methods
-
-book = Book.new 1, 'Lord of the Rings', 'Tolkien'
-
-puts book
-puts "The current title is #{book.get_title}."
-puts "The current author is #{book.get_author}."
-puts "The current due date is #{book.get_due_date.to_i}."
-
-member1 = Member.new 'Shane', 'libraryid'
-
-puts member1.inspect
-puts "The current member is #{member1.get_name}."
-
-
-begin
-
-  puts "library_object.close"
-
-rescue Library::LibraryNotOpenError
-  puts "The library is not open."
-
-ensure
-
-end
-
-#end
