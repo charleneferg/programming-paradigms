@@ -3,23 +3,23 @@ require 'singleton'
 class Library
   include Singleton
 
-  attr_accessor :library_object, :calendar, :books_available, :my_array, :members, :serve, :libraryid, :open
+  attr_accessor :calendar, :books_available, :my_array, :members, :serve, :libraryid, :open, :book_ids
 
   #calendar object
   # my_array an array that reads and stores the lines of text file
   # books_available array that stores the book objects
   # members dictionary of members
   # open boolean library open or closed
-  # library_object
+  # libraryid is the library object id
   # serve - current member being served
+  # book_ids list of book ids returned from search method
 
   def initialize
     calendar = Calendar.instance
     @calendar = calendar
-
-
     my_array = IO.readlines('collections.txt')
     books_available = []
+    book_ids = []
     my_array.each_with_index do |line, index|
       title, author = line.chomp.split(/,/)
       id = index + 1
@@ -34,6 +34,8 @@ class Library
 
     @libraryid = self.object_id
 
+    @book_ids = book_ids
+
   end
 
   def open()
@@ -42,7 +44,7 @@ class Library
       raise 'The library is already open!'
     end
 
-    calendar.advance
+    @calendar.advance
     @open = true
     puts "Today is day #{calendar.get_date}"
 
@@ -87,16 +89,130 @@ class Library
     raise 'The library is not open!' unless @open
   end
 
-  def search(string)
+  def check_in(*book_numbers) # = 1..n book numbers
+
     raise 'The library is not open!' unless @open
+
+    raise 'No member is currently being served.' unless @serve
+
+
+    for j in book_ids
+
+      y = book_ids[j]
+
+      for i in @books_out
+
+        value = @books_out[i]
+        x = i.get_id
+
+        if x == y
+          value.check_in
+          @serve.give_back(value)
+          @books_available.push value
+          count += 1
+        end
+
+      end
+
+
+      if count == 0
+        puts "The library does not have book #{y}."
+      end
+
+    end
+
   end
 
-  def check_out(*book_ids)
+  def search(string)
     raise 'The library is not open!' unless @open
+    myStr = string
+    pattern = Regexp.new(myStr, 'i')
+    unless myStr.length >= 4
+      puts 'Search string must contain at least four characters'
+    else
+
+      books_available.each_with_index do |line, index|
+        tempString = line.to_s
+        if tempString =~ pattern
+          puts line
+          temp_object = books_available.at(index)
+          book_ids << temp_object.get_id
+          count += 1
+        end
+      end
+
+      if count == 0
+        puts 'No books found'
+      end
+
+    end
+
   end
+
+  def check_out(*book_ids) # = 1..n book ids
+    raise 'The library is not open!' unless @open
+
+    raise 'No member is currently being served.' unless @serve
+
+
+    for j in book_ids
+
+      y = book_ids[j]
+
+      for i in @books_available
+
+        value = @books_available[i]
+        x = i.get_id
+
+        if x == y
+          value.get_due_date
+          value.check_out
+          @serve.check_out(value)
+          @books_available.delete_at(i)
+          count += 1
+        end
+
+      end
+
+
+      if count == 0
+        puts "The library does not have book #{y}."
+      end
+
+    end
+
+  end
+
 
   def renew(*book_ids)
     raise 'The library is not open!' unless @open
+
+    raise 'No member is currently being served' unless @serve
+
+    for j in book_ids
+
+      y = book_ids[j]
+
+      for i in @books_out
+
+        value = @books_out[i]
+        x = i.get_id
+
+        if x == y
+          date = value.get_due_date
+          @books_out[i].check_out(date)
+          count += 1
+        end
+
+      end
+
+
+      if count == 0
+        puts "The library does not have book #{y}."
+      end
+
+    end
+
   end
 
   def close
@@ -163,8 +279,7 @@ class Book
 
 
 # Returns this book's unique identification number.
-  def
-  get_id()
+  def get_id()
     @id
   end
 
@@ -191,7 +306,12 @@ class Book
 #Sets the due date of this Book. Doesn't return anything.
   def
   check_out(due_date)
-    @due_date = due_date
+
+    if @due_date == nil
+      @due_date = 0
+    end
+
+    @due_date += 7
 
   end
 
@@ -209,14 +329,14 @@ class Book
 
 end
 
-
 class Member
 
   # A member is a "customer" of the library.
   # A member must have a library card in order to check out books.
   # A member with a card may have no more than three books checked out at any time.
-  attr_accessor :close, :books_out, :book
+  attr_accessor :close, :books_out, :book, :notice
 
+  BOOK_LIMIT = 3
   #Constructs a member with the given name, and no books.
   # The member must also have a reference to the Library object that he/she uses.
 
@@ -224,7 +344,9 @@ class Member
   initialize(name, library)
     @name = name
     @library = library
-    @books_out = []
+    books_out = []
+    @books_out = books_out
+    @notice = 'this book is overdue'
   end
 
   #Returns this member's name.
@@ -237,18 +359,21 @@ class Member
   #Adds this Book object to the set of books checked out by this member.
   def
   check_out(book)
-    if @card == true
-      books_out.push book
-    else
-      puts "#{@name} does not have a library card"
+
+    puts "#{self.get_name} does not have a library card" unless members.hash.member?(self.get_name)
+
+    if @books_out.length < BOOK_LIMIT
+      books_out << book
     end
+
   end
 
 
   #Removes this Book object from the set of books checked out by this member.
   # (Since members are usually said to "return" books, this method should be called return !)
   def give_back(book)
-    books_out.pop book
+    books_out.delete_if { |book| books_out.include?(book) }
+
   end
 
 
@@ -261,7 +386,7 @@ class Member
   #Tells this member that he/she has overdue books.
   # (What the method actually does is just print out this member's name along with the notice.)
   def send_overdue_notice(notice)
-    puts "Reminder #{@name}  #{notice}"
+    p "Reminder #{get_name} #{notice}"
   end
 
 
