@@ -1,9 +1,18 @@
 :- consult('maze.pl').
-
-
-
-
-
+mazeSize(5,2).
+barrier(1,8).
+barrier(2,1).
+barrier(2,2).
+barrier(2,4).
+barrier(2,5).
+barrier(3,4).
+barrier(3,7).
+barrier(3,9).
+barrier(4,4).
+barrier(4,7).
+barrier(4,8).
+barrier(4,9).
+barrier(5,2). 
 
 move(X,Y) :- move([A,B],[C,D]).
 move([A,B],[A,_],[[A,B]]).
@@ -25,15 +34,17 @@ collist([Row, Col], [[Row, Col] | L ]) :-
 							N2 is Row - 1, 
 							rowlist([N2, Col], L).
 
+
+
 rowlist([Row, 0], []).
 rowlist([Row, Col], [[Row, Col] | L ]) :- 
 							Col > 0, 
 							N2 is Col - 1, 
 							rowlist([Row, N2], L).
+loop([1, Y], []).
+loop([X, Y],[L |List]) :- X > 0, N3 = Y, N2 is X - 1, rowlist([N2, N3], L), loop([N2, Y], List).						
 
-mazelist(List) :- mazeSize(X,Y), 
-				rowlist([X,Y], Rowlist), 
- 				append(Rowlist,Row2list,List).
+mazelist(List) :- mazeSize(X,Y),rowlist([X,Y], Rowlist), loop([X,Y], L1), append(Rowlist,L1,List).
 
 
 /* Check that the values are within the range of the maze size*/
@@ -43,7 +54,6 @@ numlist(1, Row, RowRange),
 numlist(1, Col, ColRange),
 member(X, RowRange), member(Y, ColRange),not(barrier(X,Y)).
 
-/* How do you check all facts in knowledge base? */
 /* How do you create a list of all facts in knowledge base*/
 barrier_list(List) :- 
 	findall([X,Y], 
