@@ -61,7 +61,7 @@
   (map remove-zero-set lst)
   )
 
-;(solve matrix)
+(solve matrix)
 
 ;; assign matrix with zeros removed and the lists of 9 added
 (define matrix2 (solve matrix))
@@ -82,21 +82,14 @@
            i) 
          )lst2))
 
-  (remove-all-singles-row r1)
+(remove-all-singles-row r1)
+
 (define matrix-set '())
 ;store list of sets in variable
 (set! matrix-set (transform matrix))
 
 (define set1 (set 1 2 3 4 5 6 7 8 9))
 
- (set-member? set1 5)
-(set-empty? set1)
-
-(set-remove set1 2)
-(set-count set1)
-
-(set-first set1)
-(set-rest set1)
 
 (define count-singles
   (lambda (lst)
@@ -117,19 +110,4 @@
 
 ;(getcolumn matrix)
 
-
-
-;applies proc to a set returns a list in unspecified order
-(set-map (set 1 2 3 4) add1)  ; =>'(5 4 3 2)
-
- (define (remove-list lst x)
-   (cond ((null? lst) '())
-         ((equal? (car lst) x) (remove-list (cdr lst) x))
-         (else (cons (car lst) (remove-list (cdr lst) x)))))
-
-(remove-list '(1 2 3 4 5 6 7 8 9) 2) ;=> '(1 3 4 5 6 7 8 9)
-
-(remove-list r1 2)
-
-(set-rest  (set 1 2 3 4 5 6 7 8 9)) ;=> (set 2 3 4 5 6 7 8 9)
-(set-first  (set 1 2 3 4 5 6 7 8 9)) ;=> 1
+(transform matrix)
