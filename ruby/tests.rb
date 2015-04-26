@@ -1,2 +1,0 @@
-class Library_Tests
-end

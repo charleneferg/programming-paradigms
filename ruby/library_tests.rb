@@ -53,7 +53,17 @@ class Library
 
   def find_all_overdue_books
     raise 'The library is not open!' unless @open
-
+    current_date = calendar.get_date
+    members.each do |k, v|
+      book_list = v.get_books
+      for i in book_list
+        if current_date > book_list[i].get_due_date
+          puts "#{k} #{book_list[i].to_s} "
+        else
+          puts "#{k} No books are overdue "
+        end
+      end
+    end
   end
 
   def issue_card(name_of_member)
@@ -97,9 +107,9 @@ class Library
     raise 'No member is currently being served.' unless @serve
 
 
-    for j in book_ids
+    for j in @book_ids
 
-      y = book_ids[j]
+      y = @book_ids[j]
 
       for i in @books_out
 
@@ -132,12 +142,12 @@ class Library
       puts 'Search string must contain at least four characters'
     else
 
-      books_available.each_with_index do |line, index|
+      @books_available.each_with_index do |line, index|
         tempString = line.to_s
         if tempString =~ pattern
           puts line
-          temp_object = books_available.at(index)
-          book_ids << temp_object.get_id
+          temp_object =@books_available.at(index)
+          @book_ids << temp_object.get_id
           count += 1
         end
       end
@@ -233,12 +243,6 @@ class Library
 
 
 end
-
-
-
-
-
-
 
 
 class Calendar
@@ -488,5 +492,31 @@ class MemberTest < Test::Unit::TestCase
   end
 end
 
+class LibraryTest < Test::Unit::TestCase
+
+  def setup
+    library1 = Library.instance
+    @member = Member.new 'Carmel Christie' , library1.object_id
+
+  end
+
+  def test_find_all_books
+    assert_equal 'Carmel Christie', @member.get_name
+  end
+
+
+
+
+  def test_check_out
+
+    book1 = Book.new( 1, 'Contact', 'Carl Saga')
+    members ={}
+    members.store('Carmel Christie', @member)
+    assert(true, @books_out.empty?)
+    assert_equal @books_out[], @member.check_out(book1)
+    assert(false, @books_out.empty?)
+    #assert_raise(ArgumentError) { Person.new('J', 'Y', -4) }
+  end
+end
 
 

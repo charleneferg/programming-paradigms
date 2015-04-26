@@ -1,5 +1,5 @@
 /*:- consult('maze.pl').*/
-mazeSize(5,9).
+mazeSize(2,3).
 barrier(1,8).
 barrier(2,1).
 barrier(2,2).
@@ -14,27 +14,33 @@ barrier(4,8).
 barrier(4,9).
 barrier(5,2).
 
-rowlist([0, Col], []).
-rowlist([Row, Col], [[Row, Col] | L ]) :- 
+
+nextto([X,Y], [A,B]) :-  X == A, Y is B + 1 ; Y is B - 1
+
+collist([0, Col], []).
+collist([Row, Col], [[Row, Col] | L ]) :- 
 							Row > 0, 
 							N2 is Row - 1, 
 							rowlist([N2, Col], L).
 
-collist([Row, 0], []).
-collist([Row, Col], [[Row, Col] | L ]) :- 
+rowlist([Row, 0], []).
+rowlist([Row, Col], [[Row, Col] | L ]) :- 
 							Col > 0, 
 							N2 is Col - 1, 
-							collist([Row, N2], L).
+							rowlist([Row, N2], L).
 
 mazelist(List) :- mazeSize(X,Y), 
-				rowlist([X,Y], Rowlist),
-				collist([X,Y], Collist),
- 				append(Rowlist,Collist,List).
+				anotherlist([X,Y], Rowlist), 
+ 				append(Rowlist,Row2list,List).
 
-createMaze([Row, Col], [[Row, Col] | L ]) :-
-mazelist2([Row, Col], L), mazelist([Row, Col], L).
+anotherlist([0, Col], []).
+anotherlist([Row,Col], Rowlist) :-  N1 is Row - 1, rowlist([Row,Col], Rowlist), anotherlist([N1,Col], Rowlist). 
+
+/*createMaze([Row, Col], [[Row, Col] | L ]) :-*/
+/*mazelist2([Row, Col], L), mazelist([Row, Col], L).*/
 
 /* Limit the domain of the maze*/
+
 
 valid_maze(Row, Col) :- 
 mazeSize(Row,Col),
@@ -81,8 +87,8 @@ width(0).
 width(X) :- N is X - 1, write(--), width(N).
 
 width2(0).
-width2(X) :- N is X - 1, write(.), tab(1), width2(N).
-/*width2(X) :- N is X - 1, print_maze(X), tab(1), width2(N). */
+/*width2(X) :- N is X - 1, write(.), tab(1), width2(N). */
+width2(X) :- N is X - 1, print_maze(X), tab(1), width2(N).
 
 divider(X) :- write(.+), width(X), write(+).  
 

@@ -13,13 +13,6 @@ barrier(4,8).
 barrier(4,9).
 barrier(5,2).
 
-
-door([1,1],[1,2]).
-door([1,2],[1,3]).
-door([1,3],[1,4]).
-door([1,1],[2,1]).
-door([2,1],[3,1]).
-
 reverse([],A,A).
 reverse([H|T],Acc,Result):- reverse(T,[H|Acc],Result).
 
