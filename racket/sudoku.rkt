@@ -1,6 +1,7 @@
 #lang racket
 (require racket/set)
 (require racket/unit)
+(require racket/trace)
 ; define a variable sublist that contains a list
 (define row1 '(0 2 5 0 0 1 0 0 0))
 (define row2 '(1 0 4 2 5 0 0 0 0))
@@ -68,9 +69,6 @@
 ; result from remove-zero function : removes zero and replaces zero with list possible valus 1-9
 (define r1 '((1 2 3 4 5 6 7 8 9) 2 5 (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9) 1 (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9) (1 2 3 4 5 6 7 8 9)))
 
-; result of set
-
-(define set2 (list (set 1 2 3 4 5 6 7 8 9) (set 2) (set 5) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9) (set 1) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9)))
 
 ;store the results of singles from row2
 (define s1 (singles r1))
@@ -119,29 +117,19 @@
 
 ;(getcolumn matrix)
 
-(let ((x 1) (y 2))
-  (+ y(* x 2)))
 
-(let ((x '(1 2 3)))
-  (remove 1 x))
 
-(define (remove-set lst x)
-  set-remove lst x
-  )
+;applies proc to a set returns a list in unspecified order
+(set-map (set 1 2 3 4) add1)  ; =>'(5 4 3 2)
 
-;(remove-set matrix-set 2)
-; (list-ref matrix-set 1) gets the second row
+ (define (remove-list lst x)
+   (cond ((null? lst) '())
+         ((equal? (car lst) x) (remove-list (cdr lst) x))
+         (else (cons (car lst) (remove-list (cdr lst) x)))))
 
-(map  
- (lambda (i) 
-  i
-   )matrix-set)
- 
- 
- (define find-singles
-  (lambda (lst)
-    (cond
-      ((null? lst) '())
-      ((and (list? (car lst)) (= 1 (length (car lst)))) (+ 1 (find-singles (cdr lst))))
-      (else ((find-singles (cdr lst))))
-      )))
+(remove-list '(1 2 3 4 5 6 7 8 9) 2) ;=> '(1 3 4 5 6 7 8 9)
+
+(remove-list r1 2)
+
+(set-rest  (set 1 2 3 4 5 6 7 8 9)) ;=> (set 2 3 4 5 6 7 8 9)
+(set-first  (set 1 2 3 4 5 6 7 8 9)) ;=> 1
