@@ -22,10 +22,10 @@ next_to([X,Y], [A,B]) :-  Y = B, X = A + 1.
 next_to([X,Y], [A,B]) :-  Y = B, Y = A - 1.
 
 
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), C > A, Z is C - 1.
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), A > C, Z is A - 1.
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), D > B, Z is D - 1.
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), B > D, Z is B - 1.
+move([A,B],[C,D], Route):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), C > A, Next is C - 1, Z = [Next,D], not(member(Z,Route)), move([A,B], Z, [Z|Route]).
+move([A,B],[C,D], Route):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), A > C, Next is C + 1, Z = [Next,D], not(member(Z,Route)), move([A,B], Z, [Z|Route]).
+move([A,B],[C,D], Route):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), D > B, Next is D - 1, Z = [C, Next], not(member(Z,Route)), move([A,B], Z, [Z|Route]).
+move([A,B],[C,D], Route):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), B > D, Next is D + 1, Z = [C, Next], not(member(Z,Route)),  move([A,B], Z, [Z|Route]).
 
 solve(From,To,Path) :- solve1(From,To,[From],Path).
 solve1(From, From, Route, Route).
