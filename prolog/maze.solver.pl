@@ -1,5 +1,5 @@
 :- consult('maze.pl').
-mazeSize(3,1).
+mazeSize(5,9).
 barrier(1,8).
 barrier(2,1).
 barrier(2,2).
@@ -22,10 +22,10 @@ next_to([X,Y], [A,B]) :-  Y = B, X = A + 1.
 next_to([X,Y], [A,B]) :-  Y = B, Y = A - 1.
 
 
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), C > A, Z is C - 1, move([A,B],[Z,D]).
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), A > C, Z is A - 1, move([Z,B],[C,D]).
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), D > B, Z is D - 1, move([A,B],[C,Z]).
-move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), B > D, Z is B - 1, move([A,Z],[C,D]).
+move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), C > A, Z is C - 1.
+move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), A > C, Z is A - 1.
+move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), D > B, Z is D - 1.
+move([A,B],[C,D]):- valid_range(A,B), valid_range(C,D),  next_to([A,B], [C,D]), B > D, Z is B - 1.
 
 solve(From,To,Path) :- solve1(From,To,[From],Path).
 solve1(From, From, Route, Route).
