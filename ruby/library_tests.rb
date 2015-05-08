@@ -58,7 +58,6 @@ class MemberTest < Test::Unit::TestCase
   def setup
     library1 = Library.instance
     library1.serve 'Carmel Christie'
-    #@member = Member.new 'Carmel Christie' , library1
 
   end
 
@@ -69,7 +68,7 @@ class MemberTest < Test::Unit::TestCase
 
   def test_send_overdue_notice
     notice = 'this book is overdue'
-    assert_equal 'Reminder Carmel Christie this book is overdue', @member.send_overdue_notice(notice)
+    assert_equal 'Reminder Carmel Christie this book is overdue', sle.send_overdue_notice(notice)
   end
 
 
@@ -140,7 +139,7 @@ class LibraryTest < Test::Unit::TestCase
     library1 = Library.instance
     library1.issue_card 'Carmel Christie'
     book1 = Book.new( 1, 'Contact', 'Carl Saga')
-    assert(true, @books_out.empty?)
+    assert(true, @books_available.empty?)
     assert_equal @books_out[], @member.check_out(book1)
     assert(false, @books_out.empty?)
   end

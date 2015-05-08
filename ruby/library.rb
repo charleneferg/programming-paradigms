@@ -36,7 +36,7 @@ class Library
   end
 
   def open()
-      raise 'The library is already open!' if @open
+    raise 'The library is already open!' if @open
 
     @calendar.advance
     @open = true
@@ -73,9 +73,9 @@ class Library
 
     puts " #{name_of_member} does not have a library card." unless result
 
-      temp = members.fetch(name_of_member)
-      @serve = temp
-      puts " Now serving #{name_of_member}."
+    temp = members.fetch(name_of_member)
+    @serve = temp
+    puts " Now serving #{name_of_member}."
 
 
   end
@@ -145,33 +145,38 @@ class Library
   end
 
   def check_out(*book_ids) # = 1..n book ids
+
     raise 'The library is not open!' unless @open
 
-    raise 'No member is currently being served.' unless @serve == nil
+    if @serve == nil
+      raise 'No member is currently being served.'
+    else
 
 
-    for j in book_ids
+      for j in book_ids
 
-      y = book_ids[j]
+        y = book_ids[j]
 
-      for i in @books_available
+        for i in @books_available
 
-        value = @books_available[i]
-        x = i.get_id
+          value = @books_available[i]
+          x = i.get_id
 
-        if x == y
-          value.get_due_date
-          value.check_out
-          @serve.check_out(value)
-          @books_available.delete_at(i)
-          count += 1
+          if x == y
+            value.get_due_date
+            value.check_out
+            @serve.check_out(value)
+            @books_available.delete_at(i)
+            count += 1
+          end
+
         end
 
-      end
 
+        if count == 0
+          puts "The library does not have book #{y}."
+        end
 
-      if count == 0
-        puts "The library does not have book #{y}."
       end
 
     end
