@@ -17,8 +17,9 @@ class Library
     calendar = Calendar.instance
     @calendar = calendar
     my_array = IO.readlines('collections.txt')
-    books_available = []
-    book_ids = []
+    books_available = Array.new
+    book_ids = Array.new
+
     my_array.each_with_index do |line, index|
       title, author = line.chomp.split(/,/)
       id = index + 1
@@ -30,6 +31,8 @@ class Library
     @open = false
 
     @serve = nil
+
+    @books_available = books_available
 
     @book_ids = book_ids
 
@@ -46,6 +49,18 @@ class Library
 
   def find_all_overdue_books
     raise 'The library is not open!' unless @open
+    current_date = calendar.get_date
+
+    members.each do |k, v|
+      book_list = v.get_books
+      for i in book_list
+        if current_date > book_list[i].get_due_date
+          puts "#{k} #{book_list[i].to_s} "
+        else
+          puts "#{k} No books are overdue "
+        end
+      end
+    end
 
   end
 
@@ -82,6 +97,16 @@ class Library
 
   def find_overdue_books
     raise 'The library is not open!' unless @open
+    raise 'No member is currently being served' unless @serve
+
+    book_list = @serve.get_books
+    for i in book_list
+      if current_date > book_list[i].get_due_date
+        puts "#{k} #{book_list[i].to_s} "
+      else
+        puts 'None'
+      end
+    end
   end
 
   def check_in(*book_numbers) # = 1..n book numbers
@@ -382,7 +407,7 @@ class Member
   end
 
 
-  #Tells this member that he/she has overdue books.
+  # Tells this member that he/she has overdue books.
   # (What the method actually does is just print out this member's name along with the notice.)
   def send_overdue_notice(notice)
     p "Reminder #{get_name} #{notice}"

@@ -62,13 +62,14 @@ class MemberTest < Test::Unit::TestCase
   end
 
   def test_get_name
+    library1 = Library.instance
     assert_equal 'Carmel Christie', @member.get_name
   end
 
 
   def test_send_overdue_notice
     notice = 'this book is overdue'
-    assert_equal 'Reminder Carmel Christie this book is overdue', sle.send_overdue_notice(notice)
+    assert_equal 'Reminder Carmel Christie this book is overdue', @serve.send_overdue_notice(notice)
   end
 
 
@@ -94,7 +95,6 @@ class LibraryTest < Test::Unit::TestCase
 
   def setup
     library1 = Library.instance
-    #@member = Member.new 'Carmel Christie' , library1
 
   end
 
@@ -118,30 +118,48 @@ class LibraryTest < Test::Unit::TestCase
   end
 
   def test_issue_card
-
-    assert(false, self.members.member?('Carmel Christie'))
-    self.issue_card 'Carmel Christie'
-    assert(true, self.members.member?('Carmel Christie'))
+    library1 = Library.instance
+    assert_equal(false, library1.members.member?('Carmel Christie'))
+    library1.issue_card 'Carmel Christie'
+    assert(library1.members.member?('Carmel Christie'))
   end
 
   def test_serve
     library1 = Library.instance
     library1.issue_card 'Carmel Christie'
-    assert_equal('Carmel Christie', library1.serve('Carmel Christie'))
+    assert(library1.members.member?('Carmel Christie'))
+
   end
 
   def test_find_all_books
+    library1 = Library.instance
+    library1.issue_card 'Carmel Christie'
+    library1.serve 'Carmel Christie'
     assert_equal 'Carmel Christie', @member.get_name
   end
 
 
   def test_check_out
     library1 = Library.instance
+    library1.open
     library1.issue_card 'Carmel Christie'
-    book1 = Book.new( 1, 'Contact', 'Carl Saga')
-    assert(true, @books_available.empty?)
-    assert_equal @books_out[], @member.check_out(book1)
-    assert(false, @books_out.empty?)
+    assert_equal(true,library1.books_available.empty?)
+
+
+    #assert_equal @books_out[], @member.check_out(book1)
+
+  end
+
+  def test_open
+    library1 = Library.instance
+    library1.close
+    assert_equal(true, library1.open)
+
+    exception = assert_raise(RuntimeError) do
+      library1 = Library.instance
+      library1.open
+    end
+    assert_equal('The library is already open!', exception.message)
   end
 end
 
