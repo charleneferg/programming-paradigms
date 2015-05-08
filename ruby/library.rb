@@ -3,7 +3,7 @@ require 'singleton'
 class Library
   include Singleton
 
-  attr_accessor :calendar, :books_available, :my_array, :members, :serve, :libraryid, :open, :book_ids
+  attr_accessor :calendar, :books_available, :my_array, :members, :serve, :library, :open, :book_ids
 
   #calendar object
   # my_array an array that reads and stores the lines of text file
