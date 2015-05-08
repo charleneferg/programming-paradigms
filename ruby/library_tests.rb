@@ -131,11 +131,11 @@ class LibraryTest < Test::Unit::TestCase
 
   end
 
-  def test_find_all_books
+  def test_find_all_overdue_books
     library1 = Library.instance
     library1.issue_card 'Carmel Christie'
     library1.serve 'Carmel Christie'
-    assert_equal 'Carmel Christie', @member.get_name
+    library1.
   end
 
 
@@ -161,6 +161,18 @@ class LibraryTest < Test::Unit::TestCase
     end
     assert_equal('The library is already open!', exception.message)
   end
+
+    def test_search
+
+    end
+
+    def test_close
+
+    end
+
+    def test_quit
+
+    end
 end
 
 
