@@ -60,7 +60,9 @@ class MemberTest < Test::Unit::TestCase
 
   def setup
     library1 = Library.instance
-    @member = Member.new 'Carmel Christie' , library1.object_id
+    library1.issue_card 'Carmel Christie'
+    library1.serve 'Carmel Christie'
+    #@member = Member.new 'Carmel Christie' , library1
 
   end
 
@@ -98,15 +100,14 @@ class LibraryTest < Test::Unit::TestCase
 
   def setup
     library1 = Library.instance
-    @member = Member.new 'Carmel Christie' , library1.object_id
+
+    #@member = Member.new 'Carmel Christie' , library1
 
   end
 
   def test_find_all_books
     assert_equal 'Carmel Christie', @member.get_name
   end
-
-
 
 
   def test_check_out
