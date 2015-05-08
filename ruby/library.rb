@@ -10,7 +10,7 @@ class Library
   # books_available array that stores the book objects
   # members dictionary of members
   # open boolean library open or closed
-  # libraryid is the library object id
+  # library is the library object
   # serve - current member being served
   # book_ids list of book ids returned from search method
 
@@ -32,7 +32,7 @@ class Library
 
     @serve = nil
 
-    @libraryid = self.object_id
+    @library = self
 
     @book_ids = book_ids
 
@@ -63,7 +63,7 @@ class Library
     if result == true
       puts "#{name_of_member} already has a library card."
     else
-      members.store(name_of_member, Member.new(name_of_member, @libraryid))
+      members.store(name_of_member, Member.new(name_of_member, @library))
       puts "Library card is issued to #{name_of_member}."
     end
 
