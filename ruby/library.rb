@@ -25,7 +25,7 @@ class Library
       books_available << Book.new(id, title, author)
     end
 
-    @members = {}
+    @members = Hash.new
 
     @open = false
 
@@ -36,10 +36,7 @@ class Library
   end
 
   def open()
-
-    if @open == true
-      raise 'The library is already open!'
-    end
+      raise 'The library is already open!' if @open
 
     @calendar.advance
     @open = true
@@ -53,11 +50,10 @@ class Library
   end
 
   def issue_card(name_of_member)
+
     raise 'The library is not open!' unless @open
 
-    result = members.hash.member?(name_of_member)
-
-    if result == true
+    if result = members.member?(name_of_member)
       puts "#{name_of_member} already has a library card."
     else
       members.store(name_of_member, Member.new(name_of_member, self))
@@ -67,18 +63,20 @@ class Library
   end
 
   # @param [members] name_of_member
+  # quits serving the previous member
   def serve(name_of_member)
     raise 'The library is not open!' unless @open
-    result = members.hash.member?(name_of_member)
+
     @serve = nil
 
-    if result == true
-      temp = members.value_at(name_of_member)
-      @serve = temp[0]
+    result = members.include?(name_of_member)
+
+    puts " #{name_of_member} does not have a library card." unless result
+
+      temp = members.fetch(name_of_member)
+      @serve = temp
       puts " Now serving #{name_of_member}."
-    else
-      puts " #{name_of_member} does not have a library card."
-    end
+
 
   end
 
@@ -149,7 +147,7 @@ class Library
   def check_out(*book_ids) # = 1..n book ids
     raise 'The library is not open!' unless @open
 
-    raise 'No member is currently being served.' unless @serve
+    raise 'No member is currently being served.' unless @serve == nil
 
 
     for j in book_ids
@@ -217,8 +215,6 @@ class Library
     raise 'The library is not open!' unless @open
     @open = false
     puts 'Good night'
-
-
   end
 
   def quit
@@ -329,8 +325,7 @@ end
 class Member
 
   # A member is a "customer" of the library.
-  # A member must have a library card in order to check out books.
-  # A member with a card may have no more than three books checked out at any time.
+
   attr_accessor :close, :books_out, :book, :notice, :library
 
   BOOK_LIMIT = 3
@@ -354,10 +349,12 @@ class Member
   end
 
   #Adds this Book object to the set of books checked out by this member.
+  # A member must have a library card in order to check out books.
+  # A member with a card may have no more than three books checked out at any time.
   def
   check_out(book)
 
-    puts "#{self.get_name} does not have a library card" unless @library.members.hash.member?(self.get_name)
+    puts "#{self.get_name} does not have a library card" unless @library.members.member?(self.get_name)
 
     if @books_out.length < BOOK_LIMIT
       books_out << book

@@ -18,9 +18,6 @@ class CalendarTest < Test::Unit::TestCase
 
 end
 
-
-
-
 class BookTest < Test::Unit::TestCase
 
   def setup
@@ -60,7 +57,6 @@ class MemberTest < Test::Unit::TestCase
 
   def setup
     library1 = Library.instance
-    library1.issue_card 'Carmel Christie'
     library1.serve 'Carmel Christie'
     #@member = Member.new 'Carmel Christie' , library1
 
@@ -92,7 +88,6 @@ class MemberTest < Test::Unit::TestCase
     assert(true, @books_out.empty?)
     assert_equal @books_out[], @member.check_out(book1)
     assert(false, @books_out.empty?)
-    #assert_raise(ArgumentError) { Person.new('J', 'Y', -4) }
   end
 end
 
@@ -100,18 +95,40 @@ class LibraryTest < Test::Unit::TestCase
 
   def setup
     library1 = Library.instance
-    library1.issue_card 'Carmel Christie'
-    library1.serve 'Carmel Christie'
     #@member = Member.new 'Carmel Christie' , library1
 
   end
 
-  def test_issue_card
+  def test_issue_card_not_open
+    exception = assert_raise(RuntimeError) do
+      library1 = Library.instance
+      library1.issue_card 'Nells Christie'
+    end
+    assert_equal 'The library is not open!', exception.message
 
   end
 
+  def test_issue_card_open
+
+  exception = assert_raise(RuntimeError) do
+    library1 = Library.instance
+    library1.open
+    library1.issue_card 'Nells Christie'
+  end
+  assert_equal 'The library is not open!', exception.message
+  end
+
+  def test_issue_card
+
+    assert(false, self.members.member?('Carmel Christie'))
+    self.issue_card 'Carmel Christie'
+    assert(true, self.members.member?('Carmel Christie'))
+  end
+
   def test_serve
-    
+    library1 = Library.instance
+    library1.issue_card 'Carmel Christie'
+    assert_equal('Carmel Christie', library1.serve('Carmel Christie'))
   end
 
   def test_find_all_books
@@ -120,14 +137,12 @@ class LibraryTest < Test::Unit::TestCase
 
 
   def test_check_out
-
+    library1 = Library.instance
+    library1.issue_card 'Carmel Christie'
     book1 = Book.new( 1, 'Contact', 'Carl Saga')
-    members ={}
-    members.store('Carmel Christie', @member)
     assert(true, @books_out.empty?)
     assert_equal @books_out[], @member.check_out(book1)
     assert(false, @books_out.empty?)
-    #assert_raise(ArgumentError) { Person.new('J', 'Y', -4) }
   end
 end
 
