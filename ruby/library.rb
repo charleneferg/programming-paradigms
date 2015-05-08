@@ -3,14 +3,13 @@ require 'singleton'
 class Library
   include Singleton
 
-  attr_accessor :calendar, :books_available, :my_array, :members, :serve, :library, :open, :book_ids
+  attr_accessor :calendar, :books_available, :my_array, :members, :serve, :open, :book_ids
 
   #calendar object
   # my_array an array that reads and stores the lines of text file
   # books_available array that stores the book objects
   # members dictionary of members
   # open boolean library open or closed
-  # library is the library object
   # serve - current member being served
   # book_ids list of book ids returned from search method
 
@@ -31,8 +30,6 @@ class Library
     @open = false
 
     @serve = nil
-
-    @library = self
 
     @book_ids = book_ids
 
@@ -63,7 +60,7 @@ class Library
     if result == true
       puts "#{name_of_member} already has a library card."
     else
-      members.store(name_of_member, Member.new(name_of_member, @library))
+      members.store(name_of_member, Member.new(name_of_member, self))
       puts "Library card is issued to #{name_of_member}."
     end
 
