@@ -100,9 +100,18 @@ class LibraryTest < Test::Unit::TestCase
 
   def setup
     library1 = Library.instance
-
+    library1.issue_card 'Carmel Christie'
+    library1.serve 'Carmel Christie'
     #@member = Member.new 'Carmel Christie' , library1
 
+  end
+
+  def test_issue_card
+
+  end
+
+  def test_serve
+    
   end
 
   def test_find_all_books
