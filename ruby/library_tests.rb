@@ -133,9 +133,9 @@ class LibraryTest < Test::Unit::TestCase
 
   def test_find_all_overdue_books
     library1 = Library.instance
+    library1.open
     library1.issue_card 'Carmel Christie'
     library1.serve 'Carmel Christie'
-    library1.
   end
 
 
@@ -168,11 +168,21 @@ class LibraryTest < Test::Unit::TestCase
 
     def test_close
 
+      library1 = Library.instance
+      assert_equal(true, library1.close)
+
+      exception = assert_raise(RuntimeError) do
+        library1 = Library.instance
+        library1.close
+      end
+      assert_equal('The library is not open!', exception.message)
     end
 
-    def test_quit
-
+  def test_quit
+      library1 = Library.instance
+      assert_equal('The library is now closed for renovations',library1.quit )
     end
+
 end
 
 

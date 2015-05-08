@@ -146,6 +146,7 @@ class Library
   def search(string)
     raise 'The library is not open!' unless @open
     myStr = string
+    count = 0
     pattern = Regexp.new(myStr, 'i')
     unless myStr.length >= 4
       puts 'Search string must contain at least four characters'
@@ -157,7 +158,7 @@ class Library
           puts line
           temp_object = books_available.at(index)
           book_ids << temp_object.get_id
-          count += 1
+          count = count + 1
         end
       end
 
@@ -241,7 +242,6 @@ class Library
   end
 
   def close
-
     raise 'The library is not open!' unless @open
     @open = false
     puts 'Good night'
