@@ -331,7 +331,7 @@ class Member
   # A member is a "customer" of the library.
   # A member must have a library card in order to check out books.
   # A member with a card may have no more than three books checked out at any time.
-  attr_accessor :close, :books_out, :book, :notice
+  attr_accessor :close, :books_out, :book, :notice, :library
 
   BOOK_LIMIT = 3
   #Constructs a member with the given name, and no books.
@@ -357,7 +357,7 @@ class Member
   def
   check_out(book)
 
-    puts "#{self.get_name} does not have a library card" unless members.hash.member?(self.get_name)
+    puts "#{self.get_name} does not have a library card" unless @library.members.hash.member?(self.get_name)
 
     if @books_out.length < BOOK_LIMIT
       books_out << book

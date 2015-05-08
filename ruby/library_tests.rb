@@ -3,10 +3,6 @@ require 'test/unit'
 require_relative 'library'
 
 
-
-
-
-
 class CalendarTest < Test::Unit::TestCase
   def test_get_date
     calendar = Calendar.instance
