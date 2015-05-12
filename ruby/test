@@ -28,4 +28,5 @@ lib.calendar.advance
 lib.calendar.advance
 lib.calendar.advance
 lib.find_all_overdue_books
-lib.find
+lib.find_overdue_books
+lib.check_in(1)

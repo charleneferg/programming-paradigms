@@ -53,7 +53,7 @@ class Library
 
     members.each do |k, v|
       book_list = v.get_books
-      book_list.each_index do | n |
+      book_list.each_index do |n|
         if current_date > book_list[n].get_due_date
           puts "#{k} #{book_list[n].to_s} "
         else
@@ -98,11 +98,12 @@ class Library
   def find_overdue_books
     raise 'The library is not open!' unless @open
     raise 'No member is currently being served' unless @serve
+    current_date = calendar.get_date
 
     book_list = @serve.get_books
-    for i in book_list
-      if current_date > book_list[i].get_due_date
-        puts "#{k} #{book_list[i].to_s} "
+    book_list.each_index do |n|
+      if current_date > book_list[n].get_due_date
+        puts "#{@serve.get_name} #{book_list[n].to_s} "
       else
         puts 'None'
       end
@@ -113,36 +114,39 @@ class Library
 
     raise 'The library is not open!' unless @open
 
-    raise 'No member is currently being served.' unless @serve
+    if @serve == nil
+      raise 'No member is currently being served.'
+    else
+
+      count = 0
+
+      book_ids.each_index do |i|
+
+        y = book_ids.at(i)
 
 
-    book_ids.each do |value |
+        @serve.books_out.each_index do |n|
 
-      y = book_ids[value]
+          book1 = @serve.books_out.at(n)
+          x = book1.get_id
+
+          if x == y
+            book1.check_in
+            @serve.give_back(book1)
+            @books_available.push book1
+            count = count + 1
+          end
+
+        end
 
 
-      books_out.each do | n |
-
-        book1 = @books_out[n]
-        x = book1.get_id
-
-        if x == y
-          book1.check_in
-          @serve.give_back(book1)
-          @books_available.push book1
-          count += 1
+        if count == 0
+          puts "The library does not have book #{y}."
         end
 
       end
-
-
-      if count == 0
-        puts "The library does not have book #{y}."
-      end
-
     end
-    end
-
+  end
 
 
   def search(string)
@@ -182,17 +186,17 @@ class Library
 
       count = 0
 
-      book_ids.each_index do |i |
+      book_ids.each_index do |i|
 
         y = book_ids.at(i)
 
-        books_available.each_index do | n |
-          
+        books_available.each_index do |n|
+
           book1 = @books_available.at(n)
           x = book1.get_id
 
           if x == y
-           ddate = book1.get_due_date
+            ddate = book1.get_due_date
             book1.check_out(ddate)
             @serve.check_out(book1)
             @books_available.delete_at(n)

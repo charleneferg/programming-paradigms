@@ -63,30 +63,33 @@ class MemberTest < Test::Unit::TestCase
 
   def test_get_name
     library1 = Library.instance
-    assert_equal 'Carmel Christie', @member.get_name
+    library1.serve 'Carmel Christie'
+    assert_equal 'Carmel Christie', library1.serve.get_name
   end
 
 
   def test_send_overdue_notice
+    library1 = Library.instance
+    library1.serve 'Carmel Christie'
     notice = 'this book is overdue'
-    assert_equal 'Reminder Carmel Christie this book is overdue', @serve.send_overdue_notice(notice)
+    assert_equal 'Reminder Carmel Christie this book is overdue', library1.serve.send_overdue_notice(notice)
   end
 
 
 
   def test_get_books
-    @books_out = []
-    # @books_out << Book.new( 1, 'Contact', 'Carl Saga')
-    assert_equal [], @member.get_books
+    library1 = Library.instance
+    library1.serve 'Carmel Christie'
+    library1.search 'saga'
+    assert_empty library1.serve.books_out, library1.serve.get_books
   end
 
   def test_check_out
-
-    book1 = Book.new( 1, 'Contact', 'Carl Saga')
-    members ={}
-    members.store('Carmel Christie', @member)
-    assert(true, @books_out.empty?)
-    assert_equal @books_out.member.check_out(book1)
+    library1 = Library.instance
+    library1.serve 'Carmel Christie'
+    library1.search 'saga'
+    assert_empty(library1.serve.books_out)
+    @member.check_out(book1)
     assert_empty(false, @books_out)
 
   end
@@ -137,6 +140,37 @@ class LibraryTest < Test::Unit::TestCase
     library1.open
     library1.issue_card 'Carmel Christie'
     library1.serve 'Carmel Christie'
+    library1.search 'saga'
+    library1.members.each { |value | puts value }
+    library1.check_out(1)
+    assert_equal 'Carmel Christie No books are overdue', library1.find_all_overdue_books
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.find_all_overdue_books
+  end
+
+  def test_find_overdue_books
+    library1 = Library.instance
+    library1.issue_card 'Carmel Christie'
+    library1.serve 'Carmel Christie'
+    library1.search 'saga'
+    library1.check_out(1)
+    assert_equal 'None', library1.find_overdue_books
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.calendar.advance
+    library1.find_overdue_books
   end
 
 
