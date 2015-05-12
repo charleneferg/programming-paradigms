@@ -53,9 +53,9 @@ class Library
 
     members.each do |k, v|
       book_list = v.get_books
-      for i in book_list
-        if current_date > book_list[i].get_due_date
-          puts "#{k} #{book_list[i].to_s} "
+      book_list.each_index do | n |
+        if current_date > book_list[n].get_due_date
+          puts "#{k} #{book_list[n].to_s} "
         else
           puts "#{k} No books are overdue "
         end
@@ -109,26 +109,27 @@ class Library
     end
   end
 
-  def check_in(*book_numbers) # = 1..n book numbers
+  def check_in(*book_ids) # = 1..n book numbers
 
     raise 'The library is not open!' unless @open
 
     raise 'No member is currently being served.' unless @serve
 
 
-    for j in book_ids
+    book_ids.each do |value |
 
-      y = book_ids[j]
+      y = book_ids[value]
 
-      for i in @books_out
 
-        value = @books_out[i]
-        x = i.get_id
+      books_out.each do | n |
+
+        book1 = @books_out[n]
+        x = book1.get_id
 
         if x == y
-          value.check_in
-          @serve.give_back(value)
-          @books_available.push value
+          book1.check_in
+          @serve.give_back(book1)
+          @books_available.push book1
           count += 1
         end
 
@@ -140,8 +141,9 @@ class Library
       end
 
     end
+    end
 
-  end
+
 
   def search(string)
     raise 'The library is not open!' unless @open
@@ -178,22 +180,23 @@ class Library
       raise 'No member is currently being served.'
     else
 
+      count = 0
 
-      for j in book_ids
+      book_ids.each_index do |i |
 
-        y = book_ids[j]
+        y = book_ids.at(i)
 
-        for i in @books_available
-
-          value = @books_available[i]
-          x = i.get_id
+        books_available.each_index do | n |
+          
+          book1 = @books_available.at(n)
+          x = book1.get_id
 
           if x == y
-            value.get_due_date
-            value.check_out
-            @serve.check_out(value)
-            @books_available.delete_at(i)
-            count += 1
+           ddate = book1.get_due_date
+            book1.check_out(ddate)
+            @serve.check_out(book1)
+            @books_available.delete_at(n)
+            count = count + 1
           end
 
         end
@@ -253,9 +256,7 @@ class Library
 
   end
 
-
 end
-
 
 class Calendar
   require 'date'
@@ -276,7 +277,7 @@ class Calendar
   #Increment the date (move ahead to the next day), and returns the new date.
 
   def advance()
-    @date += 1
+    @date = @date + 1
   end
 
 end

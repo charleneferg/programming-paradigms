@@ -6,7 +6,7 @@ require_relative 'library'
 class CalendarTest < Test::Unit::TestCase
   def test_get_date
     calendar = Calendar.instance
-    # assert_equal 0, calendar.get_date
+    assert_equal 0, calendar.get_date
   end
 
 
@@ -86,8 +86,9 @@ class MemberTest < Test::Unit::TestCase
     members ={}
     members.store('Carmel Christie', @member)
     assert(true, @books_out.empty?)
-    assert_equal @books_out[], @member.check_out(book1)
-    assert(false, @books_out.empty?)
+    assert_equal @books_out.member.check_out(book1)
+    assert_empty(false, @books_out)
+
   end
 end
 
@@ -143,10 +144,9 @@ class LibraryTest < Test::Unit::TestCase
     library1 = Library.instance
     library1.open
     library1.issue_card 'Carmel Christie'
-    assert_equal(true,library1.books_available.empty?)
+    assert_empty(library1.books_available)
+    library1.checkout
 
-
-    #assert_equal @books_out[], @member.check_out(book1)
 
   end
 
