@@ -64,7 +64,8 @@ class MemberTest < Test::Unit::TestCase
   def test_get_name
     library1 = Library.instance
     library1.serve 'Carmel Christie'
-    assert_equal 'Carmel Christie', library1.serve.get_name
+    temp = library1.members.fetch('Carmel Christie')
+    assert_equal 'Carmel Christie', temp.get_name
   end
 
 
@@ -72,7 +73,8 @@ class MemberTest < Test::Unit::TestCase
     library1 = Library.instance
     library1.serve 'Carmel Christie'
     notice = 'this book is overdue'
-    assert_equal 'Reminder Carmel Christie this book is overdue', library1.serve.send_overdue_notice(notice)
+    temp = library1.members.fetch('Carmel Christie')
+    assert_equal 'Reminder Carmel Christie this book is overdue', temp.send_overdue_notice(notice)
   end
 
 
@@ -81,16 +83,18 @@ class MemberTest < Test::Unit::TestCase
     library1 = Library.instance
     library1.serve 'Carmel Christie'
     library1.search 'saga'
-    assert_empty library1.serve.books_out, library1.serve.get_books
+    temp = library1.members.fetch('Carmel Christie')
+    assert_empty temp.books_out, temp.get_books
   end
 
   def test_check_out
     library1 = Library.instance
     library1.serve 'Carmel Christie'
     library1.search 'saga'
-    assert_empty(library1.serve.books_out)
-    @member.check_out(book1)
-    assert_empty(false, @books_out)
+    temp = library1.members.fetch('Carmel Christie')
+    assert_empty(temp.books_out)
+    temp.check_out(book1)
+    assert_empty(false, temp.books_out)
 
   end
 end
@@ -125,14 +129,14 @@ class LibraryTest < Test::Unit::TestCase
     library1 = Library.instance
     assert_equal(false, library1.members.member?('Carmel Christie'))
     library1.issue_card 'Carmel Christie'
-    assert(library1.members.member?('Carmel Christie'))
+    assert_equal(true, library1.members.member?('Carmel Christie'))
   end
 
   def test_serve
     library1 = Library.instance
     library1.issue_card 'Carmel Christie'
     assert(library1.members.member?('Carmel Christie'))
-
+    assert_equal('Now serving Carmel Christie.', library1.serve('Carmel Christie'))
   end
 
   def test_find_all_overdue_books
@@ -197,8 +201,19 @@ class LibraryTest < Test::Unit::TestCase
   end
 
     def test_search
-
+      library1 = Library.instance
+      assert_equal('Search string must contain at least four characters', library1.search('s'))
     end
+
+  def test_search_open
+
+    exception = assert_raise(RuntimeError) do
+      library1 = Library.instance
+      library1.open
+      library1.issue_card 'Nells Christie'
+    end
+    assert_equal 'The library is not open!', exception.message
+  end
 
     def test_close
 
