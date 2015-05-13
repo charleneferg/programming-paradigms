@@ -220,30 +220,33 @@ class Library
   def renew(*book_ids)
     raise 'The library is not open!' unless @open
 
-    raise 'No member is currently being served' unless @serve
+    if @serve == nil
+      raise 'No member is currently being served.'
+    else
+      count = 0
+      book_ids.each_index do |i|
 
-    for j in book_ids
+        y = book_ids.at(i)
 
-      y = book_ids[j]
+        @serve.books_out.each_index do |n|
 
-      for i in @books_out
+          book1 = @serve.books_out.at(n)
+          x = book1.get_id
 
-        value = @books_out[i]
-        x = i.get_id
+          if x == y
+            date = book1.get_due_date
+            book1.check_out(date)
+            count = count + 1
+          end
 
-        if x == y
-          date = value.get_due_date
-          @books_out[i].check_out(date)
-          count += 1
+        end
+
+
+        if count == 0
+          puts "The library does not have book #{y}."
         end
 
       end
-
-
-      if count == 0
-        puts "The library does not have book #{y}."
-      end
-
     end
 
   end
@@ -324,14 +327,14 @@ class Book
     @author
   end
 
-#Returns the date (as an integer) that this book is due.
+#Returns the date that this book is due.
 
   def
   get_due_date()
     @due_date
   end
 
-#Sets the due date of this Book. Doesn't return anything.
+#Sets the due date of this Book.
   def
   check_out(due_date)
 
@@ -343,7 +346,7 @@ class Book
 
   end
 
-#Sets the due date of this Book to nil. Doesn't return anything.
+#Sets the due date of this Book to nil.
   def
   check_in()
     @due_date = nil
@@ -364,7 +367,7 @@ class Member
   attr_accessor :close, :books_out, :book, :notice, :library
 
   BOOK_LIMIT = 3
-  #Constructs a member with the given name, and no books.
+  # Constructs a member with the given name, and no books.
   # The member must also have a reference to the Library object that he/she uses.
 
   def
