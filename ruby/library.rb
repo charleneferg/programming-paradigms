@@ -142,6 +142,8 @@ class Library
 
         if count == 0
           puts "The library does not have book #{y}."
+        else
+          puts "#{@serve.get_name} has returned #{count} books"
         end
 
       end
@@ -208,6 +210,8 @@ class Library
 
         if count == 0
           puts "The library does not have book #{y}."
+        else
+          puts "#{count} books have been checked out to #{@serve.get_name}."
         end
 
       end
@@ -237,6 +241,8 @@ class Library
             date = book1.get_due_date
             book1.check_out(date)
             count = count + 1
+          else
+            puts "The member does not have book #{y}."
           end
 
         end
@@ -244,6 +250,8 @@ class Library
 
         if count == 0
           puts "The library does not have book #{y}."
+        else
+          puts "#{count} books have been renewed for #{@serve.get_name}."
         end
 
       end
