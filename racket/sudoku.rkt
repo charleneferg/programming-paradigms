@@ -2,6 +2,7 @@
 (require racket/set)
 (require racket/unit)
 (require racket/trace)
+;(require racket/list)
 ; define a variable sublist that contains a list
 (define row1 '(0 2 5 0 0 1 0 0 0))
 (define row2 '(1 0 4 2 5 0 0 0 0))
@@ -14,7 +15,17 @@
 (define row9 '(0 0 0 6 0 0 5 9 0))
 (define matrix (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
 
+(define puzzle (list'(0 2 5 0 0 1 0 0 0)
+'(1 0 4 2 5 0 0 0 0)
+'(0 0 6 0 0 4 2 1 0)
+'(0 5 0 0 0 0 3 2 0)
+'(6 0 0 0 2 0 0 0 9)
+'(0 8 7 0 0 0 0 6 0)
+'(0 9 1 5 0 0 6 0 0)
+'(0 0 0 0 7 8 1 0 3)
+'(0 0 0 6 0 0 5 9 0)))
 
+(define small-puzzle (list '(0 2 5 0 0 1 0 0 0)'(1 0 4 2 5 0 0 0 0)))
 
 ; replace 0 with integers 1 to 9
 
@@ -111,3 +122,236 @@
 ;(getcolumn matrix)
 
 (transform matrix)
+
+(define (get-row1 puzzle) 
+  (let ( [row (take puzzle 1)])
+         row))
+
+(define (get-row2 puzzle) 
+  (let ( [row (drop (take puzzle 2) 1)])
+         row))
+
+(define (get-row3 puzzle) 
+  (let ( [row (drop (take puzzle 3) 2)])
+         row))
+
+(define (get-row4 puzzle) 
+  (let ( [row (drop (take puzzle 4) 3)])
+         row))
+
+(define (get-row5 puzzle) 
+  (let ( [row (drop (take puzzle 5) 4)])
+         row))
+
+(define (get-row6 puzzle) 
+  (let ( [row (drop (take puzzle 6) 5)])
+         row))
+
+(define (get-row7 puzzle) 
+  (let ( [row (drop (take puzzle 7) 6)])
+         row))
+
+(define (get-row8 puzzle) 
+  (let ( [row (drop (take puzzle 8) 7)])
+         row))
+
+(define (get-row9 puzzle) 
+  (let ( [row (drop (take puzzle 9) 8)])
+         row))
+
+;row1 col 1(take (car (take puzzle 1)) 1)
+;(take (car (get-row1 puzzle)) 1)
+(define (column1 puzzle)
+(let([c1 (take (car (get-row1 puzzle)) 1)]
+[c2 (take (car (get-row2 puzzle)) 1)]
+[c3 (take (car (get-row3 puzzle)) 1)]
+[c4 (take (car (get-row4 puzzle)) 1)]
+[c5 (take (car (get-row5 puzzle)) 1)]
+[c6 (take (car (get-row6 puzzle)) 1)]
+[c7 (take (car (get-row7 puzzle)) 1)]
+[c8 (take (car (get-row8 puzzle)) 1)]
+[c9 (take (car (get-row9 puzzle)) 1)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column2 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 2) 1)]
+[c2 (drop (take (car (get-row2 puzzle)) 2) 1)]
+[c3 (drop (take (car (get-row3 puzzle)) 2) 1)]
+[c4 (drop (take (car (get-row4 puzzle)) 2) 1)]
+[c5 (drop (take (car (get-row5 puzzle)) 2) 1)]
+[c6 (drop (take (car (get-row6 puzzle)) 2) 1)]
+[c7 (drop (take (car (get-row7 puzzle)) 2) 1)]
+[c8 (drop (take (car (get-row8 puzzle)) 2) 1)]
+[c9 (drop (take (car (get-row9 puzzle)) 2) 1)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column3 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 3) 2)]
+[c2 (drop (take (car (get-row2 puzzle)) 3) 2)]
+[c3 (drop (take (car (get-row3 puzzle)) 3) 2)]
+[c4 (drop (take (car (get-row4 puzzle)) 3) 2)]
+[c5 (drop (take (car (get-row5 puzzle)) 3) 2)]
+[c6 (drop (take (car (get-row6 puzzle)) 3) 2)]
+[c7 (drop (take (car (get-row7 puzzle)) 3) 2)]
+[c8 (drop (take (car (get-row8 puzzle)) 3) 2)]
+[c9 (drop (take (car (get-row9 puzzle)) 3) 2)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column4 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 4) 3)]
+[c2 (drop (take (car (get-row2 puzzle)) 4) 3)]
+[c3 (drop (take (car (get-row3 puzzle)) 4) 3)]
+[c4 (drop (take (car (get-row4 puzzle)) 4) 3)]
+[c5 (drop (take (car (get-row5 puzzle)) 4) 3)]
+[c6 (drop (take (car (get-row6 puzzle)) 4) 3)]
+[c7 (drop (take (car (get-row7 puzzle)) 4) 3)]
+[c8 (drop (take (car (get-row8 puzzle)) 4) 3)]
+[c9 (drop (take (car (get-row9 puzzle)) 4) 3)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column5 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 5) 4)]
+[c2 (drop (take (car (get-row2 puzzle)) 5) 4)]
+[c3 (drop (take (car (get-row3 puzzle)) 5) 4)]
+[c4 (drop (take (car (get-row4 puzzle)) 5) 4)]
+[c5 (drop (take (car (get-row5 puzzle)) 5) 4)]
+[c6 (drop (take (car (get-row6 puzzle)) 5) 4)]
+[c7 (drop (take (car (get-row7 puzzle)) 5) 4)]
+[c8 (drop (take (car (get-row8 puzzle)) 5) 4)]
+[c9 (drop (take (car (get-row9 puzzle)) 5) 4)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column6 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 6) 5)]
+[c2 (drop (take (car (get-row2 puzzle)) 6) 5)]
+[c3 (drop (take (car (get-row3 puzzle)) 6) 5)]
+[c4 (drop (take (car (get-row4 puzzle)) 6) 5)]
+[c5 (drop (take (car (get-row5 puzzle)) 6) 5)]
+[c6 (drop (take (car (get-row6 puzzle)) 6) 5)]
+[c7 (drop (take (car (get-row7 puzzle)) 6) 5)]
+[c8 (drop (take (car (get-row8 puzzle)) 6) 5)]
+[c9 (drop (take (car (get-row9 puzzle)) 6) 5)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+
+(define (column7 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 7) 6)]
+[c2 (drop (take (car (get-row2 puzzle)) 7) 6)]
+[c3 (drop (take (car (get-row3 puzzle)) 7) 6)]
+[c4 (drop (take (car (get-row4 puzzle)) 7) 6)]
+[c5 (drop (take (car (get-row5 puzzle)) 7) 6)]
+[c6 (drop (take (car (get-row6 puzzle)) 7) 6)]
+[c7 (drop (take (car (get-row7 puzzle)) 7) 6)]
+[c8 (drop (take (car (get-row8 puzzle)) 7) 6)]
+[c9 (drop (take (car (get-row9 puzzle)) 7) 6)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column8 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 8) 7)]
+[c2 (drop (take (car (get-row2 puzzle)) 8) 7)]
+[c3 (drop (take (car (get-row3 puzzle)) 8) 7)]
+[c4 (drop (take (car (get-row4 puzzle)) 8) 7)]
+[c5 (drop (take (car (get-row5 puzzle)) 8) 7)]
+[c6 (drop (take (car (get-row6 puzzle)) 8) 7)]
+[c7 (drop (take (car (get-row7 puzzle)) 8) 7)]
+[c8 (drop (take (car (get-row8 puzzle)) 8) 7)]
+[c9 (drop (take (car (get-row9 puzzle)) 8) 7)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (column9 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 9) 8)]
+[c2 (drop (take (car (get-row2 puzzle))9) 8)]
+[c3 (drop (take (car (get-row3 puzzle)) 9) 8)]
+[c4 (drop (take (car (get-row4 puzzle))9) 8)]
+[c5 (drop (take (car (get-row5 puzzle)) 9) 8)]
+[c6 (drop (take (car (get-row6 puzzle)) 9) 8)]
+[c7 (drop (take (car (get-row7 puzzle)) 9) 8)]
+[c8 (drop (take (car (get-row8 puzzle)) 9) 8)]
+[c9 (drop (take (car (get-row9 puzzle)) 9) 8)])
+  (list c1 c2 c3 c4 c5 c6 c7 c8 c9)
+  ))
+
+(define (box1 puzzle)
+(let([c1 (take (car (get-row1 puzzle)) 3)]
+[c2 (take (car (get-row2 puzzle))3)]
+[c3 (take (car (get-row3 puzzle))3)]
+)
+  (list c1 c2 c3)
+  ))
+
+(define (box2 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 6) 3)]
+[c2 (drop (take (car (get-row2 puzzle))6) 3)]
+[c3 (drop (take (car (get-row3 puzzle))6) 3)]
+)
+  (list c1 c2 c3)
+  ))
+
+(define (box3 puzzle)
+(let([c1 (drop (take (car (get-row1 puzzle)) 9) 6)]
+[c2 (drop (take (car (get-row2 puzzle))9) 6)]
+[c3 (drop (take (car (get-row3 puzzle))9) 6)]
+)
+  (list c1 c2 c3)
+  ))
+
+(define (box4 puzzle)
+(let(
+[c4 (take (car (get-row4 puzzle))3)]
+[c5 (take (car (get-row5 puzzle))3)]
+[c6 (take (car (get-row6 puzzle))3)]
+)
+  (list c4 c5 c6)
+  ))
+
+(define (box5 puzzle)
+(let([c1 (drop (take (car (get-row4 puzzle)) 6) 3)]
+[c2 (drop (take (car (get-row5 puzzle))6) 3)]
+[c3 (drop (take (car (get-row6 puzzle))6) 3)]
+)
+  (list c1 c2 c3)
+  ))
+
+(define (box6 puzzle)
+(let([c1 (drop (take (car (get-row4 puzzle)) 9) 6)]
+[c2 (drop (take (car (get-row5 puzzle))9) 6)]
+[c3 (drop (take (car (get-row6 puzzle))9) 6)]
+)
+  (list c1 c2 c3)
+  ))
+
+
+(define (box7 puzzle)
+(let(
+[c7 (take (car (get-row7 puzzle))3)]
+[c8 (take (car (get-row8 puzzle))3)]
+[c9 (take (car (get-row9 puzzle))3)])
+  (list c7 c8 c9)
+  ))
+
+(define (box8 puzzle)
+(let([c1 (drop (take (car (get-row7 puzzle)) 6) 3)]
+[c2 (drop (take (car (get-row8 puzzle))6) 3)]
+[c3 (drop (take (car (get-row9 puzzle))6) 3)]
+)
+  (list c1 c2 c3)
+  ))
+
+(define (box9 puzzle)
+(let([c1 (drop (take (car (get-row7 puzzle)) 9) 6)]
+[c2 (drop (take (car (get-row8 puzzle))9) 6)]
+[c3 (drop (take (car (get-row9 puzzle))9) 6)]
+)
+  (list c1 c2 c3)
+  ))
+
+
+puzzle
