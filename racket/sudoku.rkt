@@ -15,7 +15,7 @@
 (define row9 '(0 0 0 6 0 0 5 9 0))
 (define matrix (list row1 row2 row3 row4 row5 row6 row7 row8 row9))
 
-(define puzzle (list'(0 2 5 0 0 1 0 0 0)
+(define puzzle2 (list'(0 2 5 0 0 1 0 0 0)
 '(1 0 4 2 5 0 0 0 0)
 '(0 0 6 0 0 4 2 1 0)
 '(0 5 0 0 0 0 3 2 0)
@@ -54,13 +54,13 @@
          ) lst))
 
 ;select singles
-(define (singles lst) 
+(define (singles1 lst) 
   (filter-not list? lst))
 
 
 ;remove singles from list using remove*
 
-(define (remove-singles lst1 lst2)
+(define (remove-singles1 lst1 lst2)
   (remove* lst1 lst2)
   )
 
@@ -82,14 +82,14 @@
 
 
 ;store the results of singles from row2
-(define s1 (singles r1))
+(define s1 (singles1 r1))
   
 ; remove singles from one row
 
 (define (remove-all-singles-row lst2)
   (map (lambda (i)
          (if(list? i)
-           (remove-singles s1 range)
+           (remove-singles1 s1 range)
            i) 
          )lst2))
 
@@ -122,6 +122,9 @@
 ;(getcolumn matrix)
 
 (transform matrix)
+
+(define puzzle (transform matrix))
+
 
 (define (get-row1 puzzle) 
   (let ( [row (take puzzle 1)])
@@ -353,5 +356,29 @@
   (list c1 c2 c3)
   ))
 
+ ;(flatten (get-row1 puzzle)) result (list (set 1 2 3 4 5 6 7 8 9) (set 2) (set 5) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9) (set 1) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9) (set 1 2 3 4 5 6 7 8 9))
 
+(define x (flatten (get-row1 puzzle)))
+
+(define single (map (lambda (x) (= 1 (set-count x)))
+                 x))
+
+(define (single? xs) (map (lambda (xs) (= 1 (set-count xs)))
+                 xs))
+
+(set-subtract (set 1 2 3) (set 2))
+(set-remove (set 1 2) 2)
+(set-first (set 1))
+
+(define (t xs ys)
+  (cond [(null? xs) xs]
+        [(= 1 (set-count (car xs))) (cons (car xs) (t (cdr xs) ys))]
+        [else (t (cdr xs) ys)]))
+  (trace t)
+
+(define (remove-element xs ys)
+  x
+  )
+
+;(t (flatten (get-row1 puzzle)) '())
 puzzle
